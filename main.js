@@ -103,30 +103,17 @@ if (path) {
     animateBlob();
 }
 
-// --- Universal Holographic Tilt ---
-const holographicItems = document.querySelectorAll('.holographic');
-holographicItems.forEach(item => {
+// --- Universal Hover Enhancement ---
+const interactiveItems = document.querySelectorAll('.bento-item, .about-card, .certifications, .contact-card');
+interactiveItems.forEach(item => {
     item.addEventListener('mousemove', (e) => {
-        const rect = item.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        // Intensity check (stronger for smaller items)
-        const intensity = item.classList.contains('bento-item') ? 15 : 25;
-
-        const rotateX = (y - rect.height / 2) / intensity;
-        const rotateY = -(x - rect.width / 2) / intensity;
-        item.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
-
-        // Internal Flashlight if needed
         if (item.querySelector('.contact-glow')) {
+            const rect = item.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
             item.style.setProperty('--mx', `${x}px`);
             item.style.setProperty('--my', `${y}px`);
         }
-    });
-
-    item.addEventListener('mouseleave', () => {
-        item.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)`;
     });
 });
 

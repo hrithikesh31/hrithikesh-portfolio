@@ -45,21 +45,19 @@ document.addEventListener('click', (e) => {
 });
 
 // --- Magnetic Snap & Liquid ---
-const magnetics = document.querySelectorAll('.magnetic, .btn, .nav-item');
+const magnetics = document.querySelectorAll('.magnetic, .btn, .nav-item, .social-links a, .bento-item');
 magnetics.forEach(el => {
     el.addEventListener('mousemove', (e) => {
         const rect = el.getBoundingClientRect();
         const x = e.clientX - rect.left - rect.width / 2;
         const y = e.clientY - rect.top - rect.height / 2;
 
-        el.style.transform = `translate(${x * 0.4}px, ${y * 0.4}px) scale(1.05)`;
-        follower.style.transform = 'scale(1.5)';
-        follower.style.borderColor = '#00f2ff';
+        el.style.transform = `translate(${x * 0.4}px, ${y * 0.4}px) scale(1.02)`;
+        document.body.classList.add('hovering');
     });
     el.addEventListener('mouseleave', () => {
         el.style.transform = 'translate(0,0) scale(1)';
-        follower.style.transform = 'scale(1)';
-        follower.style.borderColor = 'rgba(255,255,255,0.2)';
+        document.body.classList.remove('hovering');
     });
 });
 

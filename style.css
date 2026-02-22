@@ -93,24 +93,58 @@ body {
 /* --- Cursor --- */
 #cursor {
     position: fixed;
-    width: 8px;
-    height: 8px;
-    background: white;
+    width: 6px;
+    height: 6px;
+    background: #00f2ff;
     border-radius: 50%;
     pointer-events: none;
     z-index: 10000;
-    mix-blend-mode: difference;
 }
 
 #cursor-follower {
     position: fixed;
-    width: 40px;
-    height: 40px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 30px;
+    height: 30px;
+    border: 1px solid rgba(0, 242, 255, 0.5);
     border-radius: 50%;
     pointer-events: none;
     z-index: 9999;
-    transition: transform 0.1s linear;
+    transition: width 0.3s, height 0.3s, border-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#cursor-follower::after {
+    content: "";
+    width: 0%;
+    height: 0%;
+    border-radius: 50%;
+    background: rgba(0, 242, 255, 0.1);
+    transition: 0.3s;
+}
+
+body.hovering #cursor-follower {
+    width: 50px;
+    height: 50px;
+    border-color: #6366f1;
+}
+
+body.hovering #cursor-follower::after {
+    width: 80%;
+    height: 80%;
+}
+
+@media (pointer: coarse) {
+
+    #cursor,
+    #cursor-follower {
+        display: none;
+    }
+
+    * {
+        cursor: auto !important;
+    }
 }
 
 /* --- Nav --- */
@@ -203,32 +237,57 @@ h1 {
     margin-left: 0.5rem;
 }
 
-/* --- Holographic Contact --- */
-.contact-card.holographic {
-    position: relative;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
-    transform-style: preserve-3d;
-    perspective: 1000px;
-    padding: 4rem;
-}
-
-.contact-glow {
-    position: absolute;
-    top: 0;
-    left: 0;
+.contact-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 5rem 3rem;
+    min-height: 600px;
     width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at var(--mx) var(--my), rgba(0, 242, 255, 0.15) 0%, transparent 60%);
-    pointer-events: none;
-    z-index: 0;
+    max-width: 500px;
+    margin: 0 auto;
+    border-radius: 20px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.contact-info,
+.contact-card h2 {
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 0.9;
+    margin-bottom: 2rem;
+    letter-spacing: -2px;
+}
+
+.contact-info p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+}
+
 .social-links {
-    position: relative;
-    z-index: 1;
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.social-links a {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--text);
+    transition: 0.3s;
+    padding: 0.5rem 0;
+    border-bottom: 2px solid transparent;
+    width: fit-content;
+}
+
+.social-links a:hover {
+    color: var(--secondary);
+    border-bottom-color: var(--secondary);
 }
 
 /* --- Magnetic Skill Cloud --- */

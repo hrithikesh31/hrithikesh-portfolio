@@ -149,3 +149,131 @@ document.addEventListener('mousemove', (e) => {
         }
     });
 });
+// --- BG Particles ---
+const canvas = document.createElement('canvas');
+canvas.id = 'bg-particles';
+document.body.prepend(canvas);
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+class Particle {
+    constructor() {
+        this.reset();
+    }
+    reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.alpha = Math.random() * 0.5;
+    }
+    update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+
+        const dx = mouseX - this.x;
+        const dy = mouseY - this.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < 100) {
+            this.x -= dx * 0.02;
+            this.y -= dy * 0.02;
+        }
+    }
+    draw() {
+        ctx.fillStyle = `rgba(99, 102, 241, ${this.alpha})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+
+for (let i = 0; i < 100; i++) particles.push(new Particle());
+
+function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+        p.update();
+        p.draw();
+    });
+    requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// --- Neural Connections ---
+const neuralCanvas = document.getElementById('neural-canvas');
+const nctx = neuralCanvas.getContext('2d');
+
+function resizeNeural() {
+    neuralCanvas.width = window.innerWidth;
+    neuralCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeNeural);
+resizeNeural();
+
+function drawNeural() {
+    nctx.clearRect(0, 0, neuralCanvas.width, neuralCanvas.height);
+    const elements = document.querySelectorAll('.bento-item, .about-card, .profile-frame');
+
+    nctx.strokeStyle = 'rgba(99, 102, 241, 0.05)';
+    nctx.lineWidth = 1;
+
+    elements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        const dist = Math.hypot(mouseX - centerX, mouseY - centerY);
+        if (dist < 300) {
+            nctx.beginPath();
+            nctx.moveTo(centerX, centerY);
+            nctx.lineTo(mouseX, mouseY);
+            nctx.stroke();
+
+            // Draw small point at section center
+            nctx.fillStyle = `rgba(0, 242, 255, ${1 - dist / 300})`;
+            nctx.beginPath();
+            nctx.arc(centerX, centerY, 2, 0, Math.PI * 2);
+            nctx.fill();
+        }
+    });
+    requestAnimationFrame(drawNeural);
+}
+drawNeural();
+
+// --- Terminal Simulation ---
+const termLines = document.querySelectorAll('.term-line');
+const logs = [
+    "> SCANNING_PORTFOLIO...",
+    "> ASSETS_INITIALIZED",
+    "> DEPTH_REACHED",
+    "> CORE_SYSTEM_NOMINAL",
+    "> INNOVATION_ACTIVE",
+    "> REDDY_CORE_ONLINE"
+];
+
+setInterval(() => {
+    termLines.forEach((line, i) => {
+        setTimeout(() => {
+            line.innerText = logs[Math.floor(Math.random() * logs.length)];
+            line.style.opacity = Math.random() * 0.5 + 0.5;
+        }, i * 200);
+    });
+}, 3000);
+
+// --- BG Parallax ---
+window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    const noise = document.getElementById('noise');
+    if (noise) {
+        noise.style.transform = `translate(-25%, calc(-25% + ${scrollY * 0.05}px))`;
+    }
+});

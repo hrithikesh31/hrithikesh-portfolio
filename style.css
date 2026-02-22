@@ -25,6 +25,36 @@ body {
         radial-gradient(circle at 80% 70%, rgba(0, 242, 255, 0.05) 0%, transparent 40%);
 }
 
+/* --- Custom Scrollbar --- */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, var(--primary), var(--secondary));
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary);
+}
+
+#scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    z-index: 10001;
+    box-shadow: 0 0 10px var(--secondary);
+    transition: width 0.1s ease-out;
+}
+
 #neural-canvas {
     position: fixed;
     top: 0;
@@ -88,11 +118,20 @@ body {
     position: fixed;
     top: 0;
     width: 100%;
-    padding: 1rem 5%;
+    padding: 1.5rem 5%;
     display: flex;
     justify-content: space-between;
-    mix-blend-mode: difference;
+    background: rgba(5, 5, 5, 0.5);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     z-index: 1000;
+    transition: background 0.3s, padding 0.3s;
+}
+
+.navbar.scrolled {
+    padding: 1rem 5%;
+    background: rgba(5, 5, 5, 0.8);
 }
 
 .logo {
@@ -262,10 +301,24 @@ h1 {
 .bento-item {
     padding: 1.5rem;
     border-radius: 12px;
-    background: var(--glass);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
     border: 1px solid var(--border);
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.bento-item::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle at 2px 2px, rgba(255, 255, 255, 0.03) 1px, transparent 0);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: -1;
 }
 
 .bento-item.large {

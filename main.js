@@ -256,11 +256,31 @@ setInterval(() => {
     });
 }, 3000);
 
-// --- BG Parallax ---
+// --- Scroll Progress & Navbar Shift ---
 window.addEventListener('scroll', () => {
     const scrollY = window.scrollY;
+    const height = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollY / height) * 100;
+
+    document.getElementById('scroll-progress').style.width = progress + '%';
+
+    const nav = document.querySelector('.navbar');
+    if (scrollY > 50) {
+        nav.classList.add('scrolled');
+    } else {
+        nav.classList.remove('scrolled');
+    }
+
+    // Noise Parallax
     const noise = document.getElementById('noise');
     if (noise) {
         noise.style.transform = `translate(-25%, calc(-25% + ${scrollY * 0.05}px))`;
+    }
+
+    // Hero Name Parallax
+    const heroH1 = document.querySelector('.magnetic-glitch');
+    if (heroH1) {
+        heroH1.style.transform = `translateY(${scrollY * 0.15}px)`;
+        heroH1.style.opacity = 1 - (scrollY / 500);
     }
 });
